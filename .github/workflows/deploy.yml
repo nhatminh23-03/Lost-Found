@@ -13,12 +13,13 @@ jobs:
     steps:
       # ── 1. Write the private key to a temp file ──────────────────────────
       - name: Set up SSH key
+        shell: bash
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          # Trust the host without interactive prompt
-          ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
+          set -euo pipefail
+          mkdir -p "$HOME/.ssh"
+          echo "${{ secrets.EC2_SSH_KEY }}" > "$HOME/.ssh/id_rsa"
+          chmod 600 "$HOME/.ssh/id_rsa"
+          ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> "$HOME/.ssh/known_hosts"
 
       # ── 2. Deploy ─────────────────────────────────────────────────────────
       - name: Deploy application
