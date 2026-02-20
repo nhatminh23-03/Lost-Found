@@ -7,15 +7,25 @@ Built with **Python 3.11+**, **MongoDB Atlas**, and **Cloudflare R2** image stor
 
 ## Table of Contents
 
-1. [Project Structure](#project-structure)
-2. [Prerequisites](#prerequisites)
-3. [Setup](#setup)
-   - [1 — Create a virtual environment](#1--create-a-virtual-environment)
-   - [2 — Install dependencies](#2--install-dependencies)
-   - [3 — Configure environment variables](#3--configure-environment-variables)
-   - [4 — Run locally](#4--run-locally)
-4. [Smoke Tests](#smoke-tests)
-5. [Troubleshooting](#troubleshooting)
+- [Lost \& Found Board](#lost--found-board)
+  - [Table of Contents](#table-of-contents)
+  - [Project Structure](#project-structure)
+  - [Prerequisites](#prerequisites)
+  - [Setup](#setup)
+    - [1 — Create a virtual environment](#1--create-a-virtual-environment)
+    - [2 — Install dependencies](#2--install-dependencies)
+    - [3 — Configure environment variables](#3--configure-environment-variables)
+    - [4 — Run locally](#4--run-locally)
+  - [Smoke Tests](#smoke-tests)
+    - [Test 1 — Create a post without an image](#test-1--create-a-post-without-an-image)
+    - [Test 2 — Create a post with an image](#test-2--create-a-post-with-an-image)
+    - [Test 3 — Feed shows all posts](#test-3--feed-shows-all-posts)
+    - [Test 4 — Detail page works](#test-4--detail-page-works)
+  - [Troubleshooting](#troubleshooting)
+    - [MongoDB connection issues](#mongodb-connection-issues)
+    - [Cloudflare R2 errors](#cloudflare-r2-errors)
+    - [Image validation errors](#image-validation-errors)
+  - [Running with Gunicorn (production-like)](#running-with-gunicorn-production-like)
 
 ---
 
@@ -142,6 +152,7 @@ Verify the app end-to-end after starting it. All steps use only a browser.
 4. Leave the photo field empty
 5. Click **Submit Post**
 6. **Expected:** redirected to the post detail page showing your entry
+7. This is an edit
 
 ---
 
