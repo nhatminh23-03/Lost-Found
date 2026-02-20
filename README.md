@@ -152,7 +152,6 @@ Verify the app end-to-end after starting it. All steps use only a browser.
 4. Leave the photo field empty
 5. Click **Submit Post**
 6. **Expected:** redirected to the post detail page showing your entry
-7. This is an edit
 
 ---
 

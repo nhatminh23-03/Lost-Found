@@ -4,8 +4,11 @@
 
 {% block content %}
 <section class="feed-header">
-  <h1>Recent Posts</h1>
-  <a href="{{ url_for('posts.new_post_form') }}" class="btn btn-primary">Report Lost / Found Item</a>
+  <div>
+    <h1>Recent Posts</h1>
+    <p>Browse lost and found items reported on campus.</p>
+  </div>
+  <a href="{{ url_for('posts.new_post_form') }}" class="btn btn-primary btn-lg">+ Report Item</a>
 </section>
 
 {% if posts %}
@@ -13,23 +16,30 @@
     {% for post in posts %}
       <a href="{{ url_for('posts.post_detail', post_id=post._id) }}" class="card">
         {% if post.image_url %}
-          <img class="card-img" src="{{ post.image_url }}" alt="Photo of {{ post.item_name }}" />
+          <img class="card-img" src="{{ post.image_url }}" alt="Photo of {{ post.item_name }}" loading="lazy" />
         {% else %}
-          <div class="card-img card-img--placeholder">No Image</div>
+          <div class="card-img card-img--placeholder"></div>
         {% endif %}
         <div class="card-body">
           <span class="badge badge--{{ post.type }}">{{ post.type | upper }}</span>
           <h2 class="card-title">{{ post.item_name }}</h2>
-          <p class="card-location">📍 {{ post.location }}</p>
+          <p class="card-meta">📍 {{ post.location }}</p>
           <p class="card-desc">{{ post.description | truncate(100) }}</p>
-          <time class="card-time" datetime="{{ post.created_at.isoformat() }}">
-            {{ post.created_at.strftime("%b %d, %Y") }}
-          </time>
+          <div class="card-footer">
+            <time datetime="{{ post.created_at.isoformat() }}">
+              {{ post.created_at.strftime("%b %d, %Y") }}
+            </time>
+          </div>
         </div>
       </a>
     {% endfor %}
   </div>
 {% else %}
-  <p class="empty-state">No posts yet. Be the first to report a lost or found item!</p>
+  <div class="empty-state">
+    <div class="empty-state__icon">🔍</div>
+    <h2>No posts yet</h2>
+    <p>Be the first to report a lost or found item on campus.</p>
+    <a href="{{ url_for('posts.new_post_form') }}" class="btn btn-primary">Report an Item</a>
+  </div>
 {% endif %}
 {% endblock %}

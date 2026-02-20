@@ -8,19 +8,28 @@
 </head>
 <body>
   <header class="navbar">
-    <a href="{{ url_for('posts.feed') }}" class="navbar-brand">Lost &amp; Found</a>
-    <nav>
-      <a href="{{ url_for('posts.feed') }}">All Posts</a>
-      <a href="{{ url_for('posts.new_post_form') }}" class="btn btn-primary">+ New Post</a>
-    </nav>
+    <div class="navbar__inner">
+      <a href="{{ url_for('posts.feed') }}" class="navbar-brand">Lost &amp; Found</a>
+      <div class="navbar__links">
+        <a href="{{ url_for('posts.feed') }}">All Posts</a>
+      </div>
+    </div>
   </header>
 
   <main class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-        <ul class="flash-messages">
+        <ul class="flash-list">
           {% for category, message in messages %}
-            <li class="flash flash--{{ category }}">{{ message }}</li>
+            <li class="flash flash--{{ category }}">
+              <span class="flash__icon">
+                {%- if category == 'error' %}⚠️
+                {%- elif category == 'success' %}✅
+                {%- elif category == 'warning' %}⚡
+                {%- else %}ℹ️{% endif -%}
+              </span>
+              {{ message }}
+            </li>
           {% endfor %}
         </ul>
       {% endif %}
@@ -30,7 +39,7 @@
   </main>
 
   <footer class="site-footer">
-    <p>CS 4800 &mdash; Spring 2026 &mdash; Lost &amp; Found Board</p>
+    CS 4800 &mdash; Spring 2026 &mdash; Lost &amp; Found Board
   </footer>
 </body>
 </html>

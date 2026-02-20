@@ -25,24 +25,44 @@ def _allowed_file(filename: str) -> bool:
     return "." in filename and filename.rsplit(".", 1)[-1].lower() in allowed
 
 
+_FIELD_LABELS: dict[str, str] = {
+    "type": "Type",
+    "item_name": "Item name",
+    "description": "Description",
+    "location": "Location",
+    "contact": "Contact info",
+}
+_MAX_LENGTHS: dict[str, int] = {
+    "item_name": 120,
+    "description": 1000,
+    "location": 120,
+    "contact": 120,
+}
+
+
 def _validate_post_form(form, files) -> list[str]:
     errors: list[str] = []
     required = ["type", "item_name", "description", "location", "contact"]
     for field in required:
+        label = _FIELD_LABELS.get(field, field)
         if not form.get(field, "").strip():
-            errors.append(f"'{field}' is required.")
-    if form.get("type") not in ("lost", "found"):
-        errors.append("'type' must be 'lost' or 'found'.")
+            errors.append(f"{label} is required.")
+            continue
+        max_len = _MAX_LENGTHS.get(field)
+        if max_len and len(form[field].strip()) > max_len:
+            errors.append(f"{label} must be {max_len} characters or fewer.")
+
+    if form.get("type", "").strip() and form.get("type") not in ("lost", "found"):
+        errors.append("Type must be either Lost or Found.")
 
     file = files.get("image")
     if file and file.filename:
         if not _allowed_file(file.filename):
-            errors.append("Image must be jpg, jpeg, png, or webp.")
+            errors.append("Photo must be a jpg, png, or webp file.")
         else:
-            # Read to check size, then seek back
             data = file.read()
             if len(data) > current_app.config["MAX_IMAGE_BYTES"]:
-                errors.append("Image must be 5 MB or smaller.")
+                errors.append("Photo must be 5 MB or smaller.")
             file.seek(0)
 
     return errors
@@ -91,6 +111,7 @@ def create_post():
         image_url=image_url,
     )
 
+    flash("Post created successfully!", "success")
     return redirect(url_for("posts.post_detail", post_id=post_id))
 
 

@@ -3,68 +3,81 @@
 {% block title %}New Post — Lost &amp; Found{% endblock %}
 
 {% block content %}
-<div class="form-wrapper">
-  <h1>Report a Lost or Found Item</h1>
-
-  <form method="POST" action="{{ url_for('posts.create_post') }}" enctype="multipart/form-data" novalidate>
-
-    <!-- Type -->
-    <fieldset class="form-group form-group--inline">
-      <legend>Type <span class="required">*</span></legend>
-      <label class="radio-label">
-        <input type="radio" name="type" value="lost"
-               {% if form and form.get('type') == 'lost' %}checked{% endif %} required />
-        Lost
-      </label>
-      <label class="radio-label">
-        <input type="radio" name="type" value="found"
-               {% if form and form.get('type') == 'found' %}checked{% endif %} />
-        Found
-      </label>
-    </fieldset>
-
-    <!-- Item name -->
-    <div class="form-group">
-      <label for="item_name">Item Name <span class="required">*</span></label>
-      <input type="text" id="item_name" name="item_name"
-             value="{{ form.item_name if form else '' }}"
-             placeholder="e.g. Blue backpack, AirPods case, Keys"
-             required maxlength="120" />
+<div class="form-page">
+  <div class="form-card">
+    <div class="form-card__header">
+      <h1>Report an Item</h1>
+      <p>Fill in the details below. All fields marked <span class="required">*</span> are required.</p>
     </div>
 
-    <!-- Location -->
-    <div class="form-group">
-      <label for="location">Location <span class="required">*</span></label>
-      <input type="text" id="location" name="location"
-             value="{{ form.location if form else '' }}"
-             placeholder="e.g. Building 8, Room 204"
-             required maxlength="120" />
-    </div>
+    <form method="POST" action="{{ url_for('posts.create_post') }}" enctype="multipart/form-data" novalidate>
 
-    <!-- Description -->
-    <div class="form-group">
-      <label for="description">Description <span class="required">*</span></label>
-      <textarea id="description" name="description"
-                rows="4" required maxlength="1000"
-                placeholder="Describe the item in detail…">{{ form.description if form else '' }}</textarea>
-    </div>
+      <!-- Type -->
+      <div class="form-group">
+        <label class="form-label">Type <span class="required">*</span></label>
+        <div class="type-selector">
+          <label class="type-option">
+            <input type="radio" name="type" value="lost"
+                   {% if form and form.get('type') == 'lost' %}checked{% endif %} required />
+            <span class="type-option__label">🔴 Lost</span>
+          </label>
+          <label class="type-option">
+            <input type="radio" name="type" value="found"
+                   {% if form and form.get('type') == 'found' %}checked{% endif %} />
+            <span class="type-option__label">🟢 Found</span>
+          </label>
+        </div>
+      </div>
 
-    <!-- Contact -->
-    <div class="form-group">
-      <label for="contact">Contact Info <span class="required">*</span></label>
-      <input type="text" id="contact" name="contact"
-             value="{{ form.contact if form else '' }}"
-             placeholder="Email or phone number"
-             required maxlength="120" />
-    </div>
+      <!-- Item name -->
+      <div class="form-group">
+        <label class="form-label" for="item_name">Item Name <span class="required">*</span></label>
+        <input class="form-input" type="text" id="item_name" name="item_name"
+               value="{{ form.item_name if form else '' }}"
+               placeholder="e.g. Blue backpack, AirPods case, Keys"
+               required maxlength="120" />
+      </div>
 
-    <!-- Image -->
-    <div class="form-group">
-      <label for="image">Photo <span class="optional">(optional · jpg/png/webp · max 5 MB)</span></label>
-      <input type="file" id="image" name="image" accept=".jpg,.jpeg,.png,.webp" />
-    </div>
+      <!-- Location -->
+      <div class="form-group">
+        <label class="form-label" for="location">Location <span class="required">*</span></label>
+        <input class="form-input" type="text" id="location" name="location"
+               value="{{ form.location if form else '' }}"
+               placeholder="e.g. Building 8, Room 204"
+               required maxlength="120" />
+      </div>
 
-    <button type="submit" class="btn btn-primary btn-submit">Submit Post</button>
-  </form>
+      <!-- Description -->
+      <div class="form-group">
+        <label class="form-label" for="description">Description <span class="required">*</span></label>
+        <textarea class="form-textarea" id="description" name="description"
+                  rows="4" required maxlength="1000"
+                  placeholder="Describe the item — color, brand, size, distinguishing features…">{{ form.description if form else '' }}</textarea>
+      </div>
+
+      <!-- Contact -->
+      <div class="form-group">
+        <label class="form-label" for="contact">Contact Info <span class="required">*</span></label>
+        <input class="form-input" type="text" id="contact" name="contact"
+               value="{{ form.contact if form else '' }}"
+               placeholder="Email address or phone number"
+               required maxlength="120" />
+      </div>
+
+      <hr class="form-divider" />
+
+      <!-- Image -->
+      <div class="form-group">
+        <label class="form-label" for="image">
+          Photo
+          <span class="form-hint">(optional &middot; jpg / png / webp &middot; max 5 MB)</span>
+        </label>
+        <input class="form-input form-input--file" type="file" id="image" name="image"
+               accept=".jpg,.jpeg,.png,.webp" />
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-submit">Submit Post</button>
+    </form>
+  </div>
 </div>
 {% endblock %}
