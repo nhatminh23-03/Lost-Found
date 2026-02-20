@@ -19,14 +19,34 @@ jobs:
           if [ -z "${{ secrets.EC2_SSH_KEY }}" ]; then echo "Missing EC2_SSH_KEY secret"; exit 1; fi
           echo "Secrets look present."
 
-      - name: Set up SSH key
+      - name: Set up SSH key (show failing line)
         shell: bash
         run: |
-          set -e
+          set -x
+          echo "HOME=$HOME"
+          whoami
+          pwd
+          ls -la
+
           mkdir -p "$HOME/.ssh"
-          echo "${{ secrets.EC2_SSH_KEY }}" > "$HOME/.ssh/id_rsa"
+          echo "made .ssh"
+          ls -la "$HOME"
+
+          printf '%s' "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' > "$HOME/.ssh/id_rsa"
+          echo "wrote key"
+          ls -la "$HOME/.ssh"
+
           chmod 600 "$HOME/.ssh/id_rsa"
+          echo "chmod ok"
+
+          ssh-keygen -y -f "$HOME/.ssh/id_rsa" > /dev/null
+          echo "key valid"
+
           ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> "$HOME/.ssh/known_hosts"
+          echo "keyscan ok"
+
+          chmod 644 "$HOME/.ssh/known_hosts"
+          echo "done"
 
       - name: Deploy application
         shell: bash
