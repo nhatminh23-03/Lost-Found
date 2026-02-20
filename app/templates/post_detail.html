@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.item_name }} — Lost &amp; Found{% endblock %}
+
+{% block content %}
+<article class="post-detail">
+  <div class="post-detail__header">
+    <span class="badge badge--{{ post.type }} badge--lg">{{ post.type | upper }}</span>
+    <h1>{{ post.item_name }}</h1>
+    <time datetime="{{ post.created_at.isoformat() }}">
+      Posted on {{ post.created_at.strftime("%B %d, %Y at %I:%M %p UTC") }}
+    </time>
+  </div>
+
+  {% if post.image_url %}
+    <div class="post-detail__img-wrap">
+      <img src="{{ post.image_url }}" alt="Photo of {{ post.item_name }}" class="post-detail__img" />
+    </div>
+  {% endif %}
+
+  <div class="post-detail__body">
+    <section class="detail-section">
+      <h2>Description</h2>
+      <p>{{ post.description }}</p>
+    </section>
+
+    <section class="detail-section">
+      <h2>Location</h2>
+      <p>📍 {{ post.location }}</p>
+    </section>
+
+    <section class="detail-section">
+      <h2>Contact</h2>
+      <p>{{ post.contact }}</p>
+    </section>
+  </div>
+
+  <div class="post-detail__back">
+    <a href="{{ url_for('posts.feed') }}">&larr; Back to all posts</a>
+  </div>
+</article>
+{% endblock %}

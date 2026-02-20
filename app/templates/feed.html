@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Feed — Lost &amp; Found{% endblock %}
+
+{% block content %}
+<section class="feed-header">
+  <h1>Recent Posts</h1>
+  <a href="{{ url_for('posts.new_post_form') }}" class="btn btn-primary">Report Lost / Found Item</a>
+</section>
+
+{% if posts %}
+  <div class="card-grid">
+    {% for post in posts %}
+      <a href="{{ url_for('posts.post_detail', post_id=post._id) }}" class="card">
+        {% if post.image_url %}
+          <img class="card-img" src="{{ post.image_url }}" alt="Photo of {{ post.item_name }}" />
+        {% else %}
+          <div class="card-img card-img--placeholder">No Image</div>
+        {% endif %}
+        <div class="card-body">
+          <span class="badge badge--{{ post.type }}">{{ post.type | upper }}</span>
+          <h2 class="card-title">{{ post.item_name }}</h2>
+          <p class="card-location">📍 {{ post.location }}</p>
+          <p class="card-desc">{{ post.description | truncate(100) }}</p>
+          <time class="card-time" datetime="{{ post.created_at.isoformat() }}">
+            {{ post.created_at.strftime("%b %d, %Y") }}
+          </time>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="empty-state">No posts yet. Be the first to report a lost or found item!</p>
+{% endif %}
+{% endblock %}
